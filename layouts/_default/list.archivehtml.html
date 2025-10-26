@@ -9,9 +9,9 @@
 		</div>
 	{{ end }}
 	
-	{{ $list := (where .Site.Pages "Type" "post") }}
+	{{ $posts := where .Site.RegularPages "Type" "in" (slice "post" "posts") }}
 	<div class="h-feed">
-		{{ range $list }}
+		{{ range $posts }}
 	
 			<p class="h-entry">
 				<a href="{{ .Permalink }}" class="u-url"><time class="dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-0700" }}">{{ .Date.Format "2006-01-02" }}</time></a>:

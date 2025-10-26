@@ -3,15 +3,15 @@
     <ul class="nav-menu">
         {{ $currentPage := . }}
         
-        <!-- Static menu items -->
+        <!-- Home link -->
+        <li><a href="/" class="nav-link{{ if eq $currentPage.RelPermalink "/" }} active{{ end }}">Home</a></li>
+        
+        <!-- Static menu items (excluding Home) -->
         {{ range .Site.Menus.main }}
-        {{ $isActive := false }}
-        {{ if eq .URL "/" }}
-            {{ $isActive = eq $currentPage.RelPermalink "/" }}
-        {{ else }}
-            {{ $isActive = or (eq $currentPage.RelPermalink .URL) (hasPrefix $currentPage.RelPermalink .URL) }}
-        {{ end }}
+        {{ if ne .URL "/" }}
+        {{ $isActive := or (eq $currentPage.RelPermalink .URL) (hasPrefix $currentPage.RelPermalink .URL) }}
         <li><a href="{{ .URL | relURL }}" class="nav-link{{ if $isActive }} active{{ end }}">{{ .Name }}</a></li>
+        {{ end }}
         {{ end }}
         
         <!-- Dynamic categories -->
@@ -19,11 +19,6 @@
         {{ $categoryURL := printf "/categories/%s/" ($name | urlize) }}
         {{ $isActive := hasPrefix $currentPage.RelPermalink $categoryURL }}
         <li><a href="{{ $categoryURL | relURL }}" class="nav-link{{ if $isActive }} active{{ end }}">{{ $name | title }}</a></li>
-        {{ end }}
-        
-        <!-- RSS Feed -->
-        {{ with .OutputFormats.Get "rss" }}
-        <li><a href="{{ .Permalink }}" target="_blank" class="nav-link">RSS</a></li>
         {{ end }}
     </ul>
 </nav>
