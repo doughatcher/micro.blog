@@ -356,6 +356,7 @@ a:hover {
 .sidebar-nav {
   border-top: 1px solid hsl(var(--border));
   padding-top: 1.5rem;
+  display: none; /* Hidden on desktop, shown on mobile */
 }
 
 .sidebar-nav ul {
@@ -629,6 +630,11 @@ a:hover {
   text-align: center;
 }
 
+/* Hide mobile profile on desktop */
+.mobile-profile {
+  display: none;
+}
+
 .footer-content {
   color: hsl(var(--muted-foreground));
   font-size: 0.875rem;
@@ -663,6 +669,41 @@ a:hover {
     justify-content: flex-start;
   }
   
+  /* Hide entire sidebar content on mobile - it will show in footer instead */
+  .sidebar .profile-section,
+  .sidebar .social-links,
+  .sidebar .publications-section,
+  .sidebar .sidebar-footer {
+    display: none;
+  }
+  
+  /* Show sidebar navigation on mobile */
+  .sidebar-nav {
+    display: block !important;
+    border-top: none;
+    padding-top: 0;
+  }
+  
+  .sidebar-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .sidebar-nav li {
+    margin-bottom: 0;
+  }
+  
+  .sidebar-nav a {
+    padding: 0.25rem 0;
+    font-size: 0.875rem;
+  }
+  
+  /* Hide horizontal nav on mobile since sidebar-nav will show */
+  .horizontal-nav {
+    display: none;
+  }
+  
   .main-content {
     padding: 1rem;
     justify-content: flex-start;
@@ -670,31 +711,72 @@ a:hover {
   }
   
   .content-wrapper {
-    padding-top: 1rem;
+    padding-top: 0;
   }
   
-  .profile-avatar {
+  /* Show avatar and social links in footer on mobile */
+  .site-footer {
+    padding: 2rem 1rem;
+  }
+  
+  .site-footer .mobile-profile {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+  
+  .site-footer .profile-avatar {
     width: 80px;
     height: 80px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 3px solid hsl(var(--border));
   }
   
-  .social-links {
+  .site-footer .mobile-profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: hsl(var(--foreground));
+  }
+  
+  .site-footer .mobile-profile-name a {
+    color: hsl(var(--foreground));
+    text-decoration: none;
+  }
+  
+  .site-footer .social-links {
+    display: flex;
+    justify-content: center;
     gap: 0.75rem;
-    margin-bottom: 1.5rem;
+    margin-top: 1rem;
   }
   
-  .social-link {
+  .site-footer .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 36px;
     height: 36px;
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    border-radius: 50%;
+    transition: all 0.2s ease;
   }
   
-  .social-link svg {
+  .site-footer .social-link:hover {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px hsl(var(--primary) / 0.2);
+  }
+  
+  .site-footer .social-link svg {
     width: 18px;
     height: 18px;
-  }
-  
-  .nav-menu {
-    gap: 1.5rem;
   }
   
   .post-meta {

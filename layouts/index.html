@@ -3,15 +3,15 @@
     {{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" (slice "post" "posts")) (.Site.Params.posts_per_page | default 20) }}
     
     {{ range $paginator.Pages }}
-    <article class="post-preview{{ if lt (len .Content) 280 }} micro-post{{ end }}">
-        {{ if and (gt (len .Content) 280) .Params.thumbnail .Site.Params.show_thumbnails }}
+    <article class="post-preview{{ if .Params.microblog }} micro-post{{ end }}">
+        {{ if and (not .Params.microblog) .Params.thumbnail .Site.Params.show_thumbnails }}
         <div class="post-thumbnail">
             <img src="{{ .Params.thumbnail }}" alt="Post thumbnail" loading="lazy">
         </div>
         {{ end }}
         
         <div class="post-content">
-            {{ if and (gt (len .Content) 280) .Title }}
+            {{ if and (not .Params.microblog) .Title }}
             <h2 class="post-title">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
             </h2>
@@ -33,11 +33,11 @@
                     <a href="{{ .Permalink }}">{{ .Date.Format "Jan 2, 2006" }}</a>
                 </time>
                 
-                {{ if and (gt (len .Content) 280) .Site.Params.show_word_count }}
+                {{ if and (not .Params.microblog) .Site.Params.show_word_count }}
                 <span class="word-count">{{ .WordCount }} words</span>
                 {{ end }}
                 
-                {{ if and (gt (len .Content) 280) .Site.Params.show_reading_time }}
+                {{ if and (not .Params.microblog) .Site.Params.show_reading_time }}
                 <span class="reading-time">{{ .ReadingTime }} min read</span>
                 {{ end }}
                 

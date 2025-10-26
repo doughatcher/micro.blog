@@ -10,9 +10,9 @@
 
 <div class="posts-list">
     {{ range .Pages }}
-    <article class="post-preview{{ if lt (len .Content) 280 }} micro-post{{ end }}">
+    <article class="post-preview{{ if .Params.microblog }} micro-post{{ end }}">
         <div class="post-content">
-            {{ if and (gt (len .Content) 280) .Title }}
+            {{ if and (not .Params.microblog) .Title }}
             <h2 class="post-title">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
             </h2>

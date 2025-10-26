@@ -1,5 +1,5 @@
 {{/* Micro post detection and handling */}}
-{{ $isMicroPost := lt (len .Content) 280 }}
+{{ $isMicroPost := .Params.microblog }}
 {{ $class := "post" }}
 {{ if $isMicroPost }}
     {{ $class = "micro-post" }}

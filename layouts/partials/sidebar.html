@@ -1,16 +1,18 @@
 <aside class="sidebar">
     <div class="sidebar-content">
         <!-- Profile Section -->
-        {{ if .Site.Params.show_avatar }}
         <div class="profile-section">
+            {{ if .Site.Params.show_avatar }}
             {{ if .Site.Params.avatar }}
             <img src="{{ .Site.Params.avatar }}" alt="{{ if .Site.Params.author.name }}{{ .Site.Params.author.name }}{{ else }}{{ .Site.Title }}{{ end }}" class="profile-avatar">
+            {{ end }}
             {{ end }}
             
             <h1 class="profile-name">
                 <a href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
             </h1>
             
+            {{ if .Site.Params.show_avatar }}
             {{ if and .Site.Params.show_bio .Site.Params.bio }}
             <p class="profile-bio">{{ .Site.Params.bio }}</p>
             {{ end }}
@@ -18,8 +20,8 @@
             {{ if .Site.Params.description }}
             <p class="profile-bio">{{ .Site.Params.description | safeHTML }}</p>
             {{ end }}
+            {{ end }}
         </div>
-        {{ end }}
     
     <!-- Social Links -->
     {{ if .Site.Params.show_social_links }}
@@ -74,6 +76,22 @@
     </div>
     {{ end }}
     
+    <!-- Navigation for mobile -->
+    <nav class="sidebar-nav">
+        {{ if .Site.Menus.main }}
+        <ul>
+            {{ range .Site.Menus.main }}
+            <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+            {{ end }}
+            
+            <!-- RSS Feed -->
+            {{ with .OutputFormats.Get "rss" }}
+            <li><a href="{{ .Permalink }}" target="_blank">RSS</a></li>
+            {{ end }}
+        </ul>
+        {{ end }}
+    </nav>
+    
     <!-- Publications Section (if enabled) -->
     {{ if .Site.Params.show_publications }}
     <div class="publications-section">
@@ -81,10 +99,5 @@
         <p><em>Coming soon: Professional work archive</em></p>
     </div>
     {{ end }}
-    
-        <!-- Copyright -->
-        <div class="sidebar-footer">
-            <p>&copy; {{ now.Year }} {{ if .Site.Params.author.name }}{{ .Site.Params.author.name }}{{ else }}{{ .Site.Title }}{{ end }}</p>
-        </div>
     </div>
 </aside>
