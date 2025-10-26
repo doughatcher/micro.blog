@@ -1,8 +1,9 @@
 {{ if .Site.Params.show_navigation }}
 <nav class="horizontal-nav">
-    {{ if .Site.Menus.main }}
     <ul class="nav-menu">
         {{ $currentPage := . }}
+        
+        <!-- Static menu items -->
         {{ range .Site.Menus.main }}
         {{ $isActive := false }}
         {{ if eq .URL "/" }}
@@ -13,11 +14,17 @@
         <li><a href="{{ .URL | relURL }}" class="nav-link{{ if $isActive }} active{{ end }}">{{ .Name }}</a></li>
         {{ end }}
         
+        <!-- Dynamic categories -->
+        {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+        {{ $categoryURL := printf "/categories/%s/" ($name | urlize) }}
+        {{ $isActive := hasPrefix $currentPage.RelPermalink $categoryURL }}
+        <li><a href="{{ $categoryURL | relURL }}" class="nav-link{{ if $isActive }} active{{ end }}">{{ $name | title }}</a></li>
+        {{ end }}
+        
         <!-- RSS Feed -->
         {{ with .OutputFormats.Get "rss" }}
         <li><a href="{{ .Permalink }}" target="_blank" class="nav-link">RSS</a></li>
         {{ end }}
     </ul>
-    {{ end }}
 </nav>
 {{ end }}

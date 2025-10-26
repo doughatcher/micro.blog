@@ -6,6 +6,11 @@
 {{- else -}}
 {{- $pages = $pctx.Pages -}}
 {{- end -}}
+{{- /* Filter out publications (microblog: false) from the feed */ -}}
+{{- if .IsHome -}}
+{{- $pages = where $pages ".Params.microblog" "!=" false -}}
+{{- $pages = where $pages "Type" "in" (slice "post" "posts") -}}
+{{- end -}}
 {{- $limit := .Site.Config.Services.RSS.Limit -}}
 {{- if ge $limit 1 -}}
 {{- $pages = $pages | first $limit -}}
