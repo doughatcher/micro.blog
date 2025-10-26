@@ -4,7 +4,9 @@
         <div class="profile-section">
             {{ if .Site.Params.show_avatar }}
             {{ if .Site.Params.avatar }}
-            <img src="{{ .Site.Params.avatar }}" alt="{{ if .Site.Params.author.name }}{{ .Site.Params.author.name }}{{ else }}{{ .Site.Title }}{{ end }}" class="profile-avatar">
+            <a href="{{ "/" | relURL }}">
+                <img src="{{ .Site.Params.avatar }}" alt="{{ if .Site.Params.author.name }}{{ .Site.Params.author.name }}{{ else }}{{ .Site.Title }}{{ end }}" class="profile-avatar">
+            </a>
             {{ end }}
             {{ end }}
             
