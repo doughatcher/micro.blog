@@ -1,0 +1,18 @@
+name: Update Micro.blog
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-microblog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Micro.blog rebuild
+        run: |
+          # Using Micro.blog's design update API
+          # This endpoint tells Micro.blog to pull the latest changes from your GitHub repo
+          curl -X POST "https://micro.blog/users/update_design" \
+            -H "Authorization: Bearer ${{ secrets.MICROBLOG_TOKEN }}" \
+            -d "site_id=${{ vars.MICROBLOG_SITE_ID }}"
