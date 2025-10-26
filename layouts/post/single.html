@@ -20,6 +20,26 @@
 	{{ .Content }}
   </article>
 
+  <!-- Social syndication links -->
+  {{ if or .Params.mastodon .Params.bluesky .Params.threads .Params.linkedin }}
+  <div class="syndication-section">
+    <div class="syndication-links">
+      {{ if .Params.mastodon }}
+      <a href="https://mastodon.social/@{{ .Params.mastodon.username }}/{{ .Params.mastodon.id }}" class="syndication-link" target="_blank">Mastodon</a>
+      {{ end }}
+      {{ if .Params.bluesky }}
+      <a href="{{ .Params.bluesky.link }}" class="syndication-link" target="_blank">Bluesky</a>
+      {{ end }}
+      {{ if .Params.threads }}
+      <a href="{{ .Params.threads.url }}" class="syndication-link" target="_blank">Threads</a>
+      {{ end }}
+      {{ if .Params.linkedin }}
+      <a href="https://www.linkedin.com/feed/update/urn:li:activity:{{ .Params.linkedin.activity | strings.TrimPrefix "urn:li:activity:" }}" class="syndication-link" target="_blank">LinkedIn</a>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+
 </div>
 
 {{ if .Site.Params.include_conversation }}
