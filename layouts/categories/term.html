@@ -29,15 +29,17 @@
         {{ end }}
         
         <article class="publication-item">
-            {{ if or .Params.thumbnail (index .Params.photos 0) (index .Params.images 0) }}
+            {{ $thumbnail := "" }}
+            {{ if .Params.thumbnail }}
+                {{ $thumbnail = .Params.thumbnail }}
+            {{ else if .Params.photos }}
+                {{ $thumbnail = index .Params.photos 0 }}
+            {{ else if .Params.images }}
+                {{ $thumbnail = index .Params.images 0 }}
+            {{ end }}
+            
+            {{ if $thumbnail }}
             <div class="publication-thumbnail">
-                {{ $thumbnail := .Params.thumbnail }}
-                {{ if not $thumbnail }}
-                    {{ $thumbnail = index .Params.photos 0 }}
-                {{ end }}
-                {{ if not $thumbnail }}
-                    {{ $thumbnail = index .Params.images 0 }}
-                {{ end }}
                 <a href="{{ $externalLink }}" target="_blank" rel="noopener noreferrer">
                     <img src="{{ $thumbnail }}" alt="{{ .Title }}" loading="lazy">
                 </a>
