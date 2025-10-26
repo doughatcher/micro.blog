@@ -1,24 +1,86 @@
 {{ define "main" }}
-<div class="home h-feed">
-
-  <ul class="post-list">
-	{{ $paginator := .Paginate (where .Site.Pages.ByDate.Reverse "Type" "post") (index .Site.Params "archive-paginate" | default 25) }}
-	{{ range $paginator.Pages  }}
-      <li class="h-entry">
-		{{ if .Title }}
-			<h1 class="p-name"><a href="{{ .Permalink }}">{{ .Title }}</a></h1>
-		{{ end }}
-
-        <a href="{{ .Permalink }}" class="u-url"><span class="post-meta"><time class="dt-published" datetime="{{ .Date.Format "2006-01-02 15:04:05 -0700" }}">{{ .Date.Format "Jan 2, 2006" }}</time></span></a>
-
-        <div class="e-content">
-         	{{ .Content }}
+<div class="posts-list">
+    {{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" (slice "post" "posts")) (.Site.Params.posts_per_page | default 20) }}
+    
+    {{ range $paginator.Pages }}
+    <article class="post-preview{{ if lt (len .Content) 280 }} micro-post{{ end }}">
+        {{ if and (gt (len .Content) 280) .Params.thumbnail .Site.Params.show_thumbnails }}
+        <div class="post-thumbnail">
+            <img src="{{ .Params.thumbnail }}" alt="Post thumbnail" loading="lazy">
         </div>
-      </li>
+        {{ end }}
+        
+        <div class="post-content">
+            {{ if and (gt (len .Content) 280) .Title }}
+            <h2 class="post-title">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+            </h2>
+            {{ end }}
+            
+            <div class="post-body">
+                {{ if .Summary }}
+                    {{ .Summary }}
+                    {{ if .Truncated }}
+                    <p><a href="{{ .Permalink }}" class="read-more">Continue reading →</a></p>
+                    {{ end }}
+                {{ else }}
+                    {{ .Content }}
+                {{ end }}
+            </div>
+            
+            <div class="post-meta">
+                <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                    <a href="{{ .Permalink }}">{{ .Date.Format "Jan 2, 2006" }}</a>
+                </time>
+                
+                {{ if and (gt (len .Content) 280) .Site.Params.show_word_count }}
+                <span class="word-count">{{ .WordCount }} words</span>
+                {{ end }}
+                
+                {{ if and (gt (len .Content) 280) .Site.Params.show_reading_time }}
+                <span class="reading-time">{{ .ReadingTime }} min read</span>
+                {{ end }}
+                
+                {{ if .Params.tags }}
+                <div class="post-tags">
+                    {{ range .Params.tags }}
+                    <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">#{{ . }}</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+                
+                <!-- Social syndication links -->
+                {{ if or .Params.mastodon .Params.bluesky .Params.threads .Params.linkedin }}
+                <div class="syndication-links">
+                    {{ if .Params.mastodon }}
+                    <a href="https://mastodon.social/@{{ .Params.mastodon.username }}/{{ .Params.mastodon.id }}" class="syndication-link" target="_blank">Mastodon</a>
+                    {{ end }}
+                    {{ if .Params.bluesky }}
+                    <a href="{{ .Params.bluesky.link }}" class="syndication-link" target="_blank">Bluesky</a>
+                    {{ end }}
+                    {{ if .Params.threads }}
+                    <a href="{{ .Params.threads.url }}" class="syndication-link" target="_blank">Threads</a>
+                    {{ end }}
+                    {{ if .Params.linkedin }}
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:{{ .Params.linkedin.activity | strings.TrimPrefix "urn:li:activity:" }}" class="syndication-link" target="_blank">LinkedIn</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </div>
+        </div>
+    </article>
     {{ end }}
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="{{ "feed.xml" | absURL }}">via RSS</a></p>
-
+    
+    {{ if gt $paginator.TotalPages 1 }}
+    <nav class="pagination">
+        {{ if $paginator.HasPrev }}
+        <a href="{{ $paginator.Prev.URL }}" class="prev">← Newer Posts</a>
+        {{ end }}
+        
+        {{ if $paginator.HasNext }}
+        <a href="{{ $paginator.Next.URL }}" class="next">Older Posts →</a>
+        {{ end }}
+    </nav>
+    {{ end }}
 </div>
 {{ end }}

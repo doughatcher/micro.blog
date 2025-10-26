@@ -1,1 +1,17 @@
+name = "Microblog Custom"
+license = "MIT"
+licenselink = "https://github.com/doughatcher/micro.blog/blob/main/LICENSE"
+description = "A modern two-column microblog theme based on theme-blank with centered content and responsive design"
+homepage = "https://github.com/doughatcher/micro.blog"
+tags = ["microblog", "minimal", "two-column", "centered", "responsive", "blank-based"]
+features = ["responsive", "rss", "json-feed", "micropost-detection", "social-media", "centered-layout", "archive", "photos"]
+min_version = "0.91.0"
 
+[author]
+  name = "Doug Hatcher"
+  homepage = "https://github.com/doughatcher"
+
+[original]
+  author = "Micro.blog"
+  homepage = "https://github.com/microdotblog/theme-blank"
+  repo = "https://github.com/microdotblog/theme-blank"
