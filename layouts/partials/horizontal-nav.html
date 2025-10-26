@@ -1,3 +1,4 @@
+{{ if .Site.Params.show_navigation }}
 <nav class="horizontal-nav">
     {{ if .Site.Menus.main }}
     <ul class="nav-menu">
@@ -12,3 +13,4 @@
     </ul>
     {{ end }}
 </nav>
+{{ end }}

@@ -121,6 +121,7 @@
         "show_avatar": true,
         "show_bio": true,
         "show_social_links": true,
+        "show_navigation": false,
         "show_word_count": true,
         "show_reading_time": true,
         "show_thumbnails": false,

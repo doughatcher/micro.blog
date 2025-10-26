@@ -62,24 +62,5 @@
             </div>
             {{ end }}
         </div>
-        
-        <div class="footer-content">
-            <p>&copy; {{ now.Year }} {{ if .Site.Params.author.name }}{{ .Site.Params.author.name }}{{ else }}{{ .Site.Params.author | default .Site.Title }}{{ end }}. 
-               Powered by <a href="https://micro.blog/">micro.blog</a> and <a href="https://gohugo.io/">Hugo</a>.
-            </p>
-            
-            {{ if .Site.Params.microblog_username }}
-            <p>
-                Follow me on <a href="https://micro.blog/{{ .Site.Params.microblog_username }}">micro.blog</a>
-            </p>
-            {{ end }}
-            
-            <!-- RSS Feed Link -->
-            {{ with .OutputFormats.Get "rss" }}
-            <p>
-                <a href="{{ .Permalink }}" class="rss-link">RSS Feed</a>
-            </p>
-            {{ end }}
-        </div>
     </div>
 </footer>
