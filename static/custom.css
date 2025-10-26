@@ -1,5 +1,6 @@
 /* Publications styling */
-.publications-page {
+.publications-page,
+.category-page {
   max-width: 720px;
   margin: 0 auto;
 }
@@ -23,16 +24,26 @@
   border-bottom: 1px solid hsl(var(--border) / 0.3);
   display: flex;
   gap: 1.5rem;
+  align-items: flex-start;
 }
 
 .publication-item:last-child {
   border-bottom: none;
+  padding-bottom: 0;
 }
 
 .publication-thumbnail {
   flex-shrink: 0;
   width: 120px;
   height: 120px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.publication-thumbnail a {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .publication-thumbnail img {
@@ -41,6 +52,11 @@
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid hsl(var(--border));
+  transition: transform 0.2s ease;
+}
+
+.publication-thumbnail img:hover {
+  transform: scale(1.05);
 }
 
 .publication-content-wrapper {
@@ -50,13 +66,17 @@
 
 .publication-title {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
 }
 
 .publication-title a {
   color: hsl(var(--foreground));
   text-decoration: none;
   transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .publication-title a:hover {
@@ -66,13 +86,18 @@
 .publication-source {
   color: hsl(var(--muted-foreground));
   font-size: 0.875rem;
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.75rem 0;
   font-weight: 500;
 }
 
 .publication-description {
-  margin-bottom: 1rem;
+  margin: 0 0 1rem 0;
   line-height: 1.6;
+  color: hsl(var(--foreground));
+}
+
+.publication-description p {
+  margin: 0 0 0.5rem 0;
 }
 
 .publication-meta {
@@ -82,6 +107,22 @@
   flex-wrap: wrap;
   font-size: 0.875rem;
   color: hsl(var(--muted-foreground));
+}
+
+.publication-meta time {
+  color: hsl(var(--muted-foreground));
+}
+
+.publication-meta .read-more {
+  color: hsl(var(--primary));
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.publication-meta .read-more:hover {
+  color: hsl(var(--primary));
+  text-decoration: underline;
 }
 
 /* Single publication page */
