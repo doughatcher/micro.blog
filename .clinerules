@@ -1,0 +1,189 @@
+# Dougie Theme Development Rules
+
+## Project Overview
+Dougie is a versatile micro.blog theme that supports three distinct modes through configuration:
+1. **Microblog Mode**: Personal microblogging with sidebar layout
+2. **Publication Mode**: Professional publication with header navigation
+3. **One-Page Mode**: Portfolio/landing page layout
+
+## Architecture Principles
+
+### File Structure
+- `/layouts/`: Hugo template files
+  - `_default/`: Base templates (baseof.html, single.html, list.html, etc.)
+  - `partials/`: Reusable components (header, footer, sidebar, etc.)
+  - Root level: Special layouts (index.html, archive, photos, etc.)
+- `/static/`: Static assets served directly
+  - `css/`: Stylesheets (main.css for theme, custom.css for user overrides)
+  - `js/`: JavaScript files
+- `/content/`: User content (posts, pages)
+- `config.json`: Site and theme configuration
+
+### Template Conventions
+1. **Use partials for reusable components**: Keep layouts DRY
+2. **Check config flags before rendering**: Use `{{ if .Site.Params.show_xyz }}` patterns
+3. **Support nested author objects**: `.Site.Params.author.name` not just `.Site.Params.author`
+4. **Use safeHTML for user HTML**: When rendering user-provided HTML content
+5. **Static files only**: Use `relURL` for CSS/JS, not `resources.Get` (micro.blog compatibility)
+
+### Styling Guidelines
+1. **CSS Custom Properties**: Use HSL-based color system for easy theming
+2. **Mobile-first responsive**: Start with mobile, enhance for desktop
+3. **Component-based classes**: Prefix with purpose (.post-, .profile-, .nav-, etc.)
+4. **Dark mode support**: Use `@media (prefers-color-scheme: dark)` and `.dark` class
+5. **No build step required**: Keep CSS vanilla, no preprocessors needed for compatibility
+
+### Configuration Pattern
+```json
+{
+  "params": {
+    "theme_mode": "microblog|publication|onepage",
+    "show_*": true/false,  // Feature flags
+    "author": {            // Nested author object
+      "name": "...",
+      "avatar": "...",
+      "username": "..."
+    }
+  }
+}
+```
+
+## Development Workflows
+
+### Adding a New Feature
+1. Add config flag to README configuration examples
+2. Update partials to check the flag
+3. Add CSS classes following naming conventions
+4. Test in all three modes (microblog, publication, onepage)
+5. Update feature list in theme.toml and README
+
+### Fixing Template Issues
+1. Check if config has required values (use defaults with `| default`)
+2. Verify object paths (.Site.Params.author.name vs .Site.Params.author)
+3. Remember to use safeHTML for HTML content
+4. Test both with and without the feature enabled
+
+### Styling Changes
+1. Use existing CSS custom properties when possible
+2. Add new properties to :root if creating new theming options
+3. Ensure dark mode variant exists
+4. Test responsive breakpoints (768px, 480px)
+5. Keep specificity low for easy user overrides
+
+## Testing Checklist
+
+### Before Committing
+- [ ] Hugo builds without errors (`hugo`)
+- [ ] All three modes render correctly
+- [ ] Dark mode works properly
+- [ ] Mobile responsive (check at 768px and 480px)
+- [ ] No console errors in browser
+- [ ] Config flags work as documented
+- [ ] HTML validates
+- [ ] Links work (internal and external)
+
+### Browser Testing
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile Safari (iOS)
+- Chrome Mobile (Android)
+
+## Common Patterns
+
+### Conditional Rendering Based on Mode
+```go
+{{ if eq .Site.Params.theme_mode "microblog" }}
+  {{ partial "sidebar.html" . }}
+{{ else if eq .Site.Params.theme_mode "publication" }}
+  {{ partial "header-nav.html" . }}
+{{ end }}
+```
+
+### Safe Author Name Display
+```go
+{{ if .Site.Params.author.name }}
+  {{ .Site.Params.author.name }}
+{{ else }}
+  {{ .Site.Title }}
+{{ end }}
+```
+
+### Feature Flag with Default
+```go
+{{ if .Site.Params.show_avatar | default true }}
+  <img src="{{ .Site.Params.avatar }}" alt="...">
+{{ end }}
+```
+
+### Safe HTML Rendering
+```go
+<p>{{ .Site.Params.description | safeHTML }}</p>
+```
+
+## Micro.blog Specific
+
+### File Locations
+- CSS/JS must be in `/static/` (not `/assets/`)
+- Use `relURL` helper for paths
+- No Hugo Pipes (minify, fingerprint) - not supported on micro.blog
+
+### Required Files
+- `theme.toml`: Theme metadata
+- `plugin.json`: Micro.blog plugin configuration (if applicable)
+- Layouts must follow micro.blog naming conventions (list.archivehtml.html, etc.)
+
+### Output Formats
+Support these in config:
+- RSS (feed.xml)
+- JSON Feed (feed.json)
+- Archive JSON (archive/index.json)
+- Photos JSON (photos/index.json)
+- Podcast feeds (if applicable)
+
+## Documentation Standards
+
+### README.md Must Include
+1. Clear description of all three modes
+2. Configuration examples for each mode
+3. Installation instructions
+4. Customization guide
+5. Credits and license
+
+### Code Comments
+- Explain WHY not WHAT
+- Document complex conditionals
+- Note micro.blog compatibility requirements
+- Reference config options being checked
+
+## Git Workflow
+
+### Commit Messages
+- Use conventional commits format
+- `feat:` for new features
+- `fix:` for bug fixes
+- `docs:` for documentation
+- `style:` for CSS/styling changes
+- `refactor:` for code restructuring
+
+### Branch Strategy
+- `main`: Stable, production-ready code
+- Feature branches for new work
+- Test thoroughly before merging
+
+## Future Enhancements
+
+### Planned Features (Not Yet Implemented)
+- Publication mode header navigation
+- One-page mode layout
+- Featured post support
+- Category-based layouts
+- Custom color scheme picker
+- Additional social platforms
+- Newsletter integration
+
+When implementing these, follow the patterns established in microblog mode.
+
+---
+
+**Note**: This theme is named "Dougie" after Doug Hatcher, who definitely does not go by Dougie. This is a running joke and should remain in the documentation.
