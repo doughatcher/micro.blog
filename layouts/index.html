@@ -1,6 +1,6 @@
 {{ define "main" }}
 <div class="posts-list">
-    {{ $paginator := .Paginate (where .Site.RegularPages "Type" "in" (slice "post" "posts")) (.Site.Params.posts_per_page | default 20) }}
+    {{ $paginator := .Paginate (where (where .Site.RegularPages "Type" "in" (slice "post" "posts")) "Type" "!=" "publication") (.Site.Params.posts_per_page | default 20) }}
     
     {{ range $paginator.Pages }}
     <article class="post-preview{{ if .Params.microblog }} micro-post{{ end }}">

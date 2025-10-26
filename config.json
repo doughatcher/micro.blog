@@ -1,6 +1,30 @@
 {
     "title": "Doug Hatcher",
     "baseURL": "https://doughatcher.com/",
+    "menu": {
+        "main": [
+            {
+                "name": "Home",
+                "url": "/",
+                "weight": 1
+            },
+            {
+                "name": "About",
+                "url": "/about/",
+                "weight": 2
+            },
+            {
+                "name": "Publications",
+                "url": "/publications/",
+                "weight": 3
+            },
+            {
+                "name": "Archive",
+                "url": "/archive/",
+                "weight": 4
+            }
+        ]
+    },
     "mediaTypes": {
         "application/json": {
             "suffixes": [
@@ -121,7 +145,7 @@
         "show_avatar": true,
         "show_bio": true,
         "show_social_links": true,
-        "show_navigation": false,
+        "show_navigation": true,
         "show_dark_mode_toggle": true,
         "show_word_count": true,
         "show_reading_time": true,

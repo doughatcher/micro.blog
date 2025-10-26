@@ -2,8 +2,15 @@
 <nav class="horizontal-nav">
     {{ if .Site.Menus.main }}
     <ul class="nav-menu">
+        {{ $currentPage := . }}
         {{ range .Site.Menus.main }}
-        <li><a href="{{ .URL | relURL }}" class="nav-link">{{ .Name }}</a></li>
+        {{ $isActive := false }}
+        {{ if eq .URL "/" }}
+            {{ $isActive = eq $currentPage.RelPermalink "/" }}
+        {{ else }}
+            {{ $isActive = or (eq $currentPage.RelPermalink .URL) (hasPrefix $currentPage.RelPermalink .URL) }}
+        {{ end }}
+        <li><a href="{{ .URL | relURL }}" class="nav-link{{ if $isActive }} active{{ end }}">{{ .Name }}</a></li>
         {{ end }}
         
         <!-- RSS Feed -->
